@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Observer pattern example: a news subject with multiple observers."""
+
 from __future__ import annotations
 from typing import Protocol
 
@@ -8,10 +10,12 @@ class Observer(Protocol):
 
 
 class NewsSubject:
+    """Subject that observers can subscribe to, and receive updates."""
     def __init__(self) -> None:
         self._subs: dict[Observer, set[str] | None] = {}
 
-    def subscribe(self, observer: Observer, topics: set[str] | None = None) -> None:
+    def subscribe(self, observer: Observer,
+                  topics: set[str] | None = None) -> None:
         if observer in self._subs:
             return  # ignore duplicate subscribe for same instance
         self._subs[observer] = topics
@@ -27,17 +31,22 @@ class NewsSubject:
 
 
 class LogObserver:
+    """Example observer that logs updates to the console."""
     def update(self, topic: str, data: str) -> None:
         print(f"log:{topic}={data}")
 
 
 class EmailObserver:
+    """Example observer that simulates sending an email with the update."""
     def update(self, topic: str, data: str) -> None:
         print(f"email:{topic}={data}")
 
+
 class SmsObserver:
+    """Example observer that simulates sending an SMS with the update."""
     def update(self, topic: str, data: str) -> None:
         print(f"sms:{topic}={data}")
+
 
 def main() -> None:
     subject = NewsSubject()
